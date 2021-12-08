@@ -30,8 +30,9 @@ vector<Process>& System::Processes() {
         std::string user=LinuxParser::User(i);
         std::string command=LinuxParser::Command(i);
         float cpu=.3;
-        std::string ram="100";
-        long int uptime=10;;
+        std::string ram=LinuxParser::Ram(i);
+        
+        long int uptime=10;
         Process p(i,user,command,cpu,ram,uptime);
     
         processes_.push_back(p);
