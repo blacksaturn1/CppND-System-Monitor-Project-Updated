@@ -41,7 +41,6 @@ long int Process::UpTime() { return uptime_; }
 // REMOVE: [[maybe_unused]] once you define the function
 bool Process::operator<(Process const& a) const 
 { 
-    //std::cout<<"HERERE"<<std::endl;
     return stol(this->ram_)<stol(a.ram_); 
 }
 

@@ -204,7 +204,7 @@ string LinuxParser::Command(int pid)  {
    return command; 
 }
 
-// TODO: Read and return the memory used by a process
+// TODONE: Read and return the memory used by a process
 // REMOVE: [[maybe_unused]] once you define the function
 string LinuxParser::Ram(int pid) {
   string ram;
@@ -216,9 +216,9 @@ string LinuxParser::Ram(int pid) {
       std::istringstream linestream(line);
       linestream>>key>>value;
       if(key=="VmSize:"){
-        double r=stod(value)/1000.0;
+        int r=stoi(value)/1024;
         std::stringstream stream;
-        stream<<std::fixed<< std::setprecision(2) <<r;
+        stream<<std::right<< std::setw(7) <<r;
         ram=stream.str();
       }
 
@@ -274,4 +274,21 @@ string LinuxParser::User(int pid) {
 
 // TODO: Read and return the uptime of a process
 // REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::UpTime(int pid[[maybe_unused]]) { return 0; }
+long LinuxParser::UpTime(int pid) { 
+  
+  string line;
+  string value;
+  std::ifstream filestream(kProcDirectory+to_string(pid)+kStatFilename);
+  if (filestream.is_open()) {
+    if(std::getline(filestream, line)){
+      std::istringstream linestream(line);
+      for (int x=0;x<22;x++)
+      {
+        linestream>>value;
+      }
+    }
+    
+  }
+  long upTime=stol(value);
+  return upTime; 
+}
