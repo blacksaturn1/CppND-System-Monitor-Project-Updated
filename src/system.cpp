@@ -21,23 +21,25 @@ Processor& System::Cpu() { return cpu_; }
 // TODO: Return a container composed of the system's processes
 vector<Process>& System::Processes() { 
     vector<int> x=LinuxParser::Pids();
+    processes_.clear();
     //vector<Process>* proc=&processes_; 
     //oc=new vector<Process>();
-    
+    //std::cout<<x.size()<<std::endl;
     for(auto &&i:x){
         //std::cout<<"here"<<std::endl;
-
+        //std::cout<<x.size()<<std::endl;
         std::string user=LinuxParser::User(i);
         std::string command=LinuxParser::Command(i);
-        float cpu=.3;
         std::string ram=LinuxParser::Ram(i);
-        
+
+        float cpu=.3;
         long int uptime=10;
         Process p(i,user,command,cpu,ram,uptime);
     
         processes_.push_back(p);
 
     }
+    std::sort(processes_.begin(), processes_.end(),std::greater<Process>());
     return processes_; 
 }
 
@@ -47,8 +49,7 @@ std::string System::Kernel() { return LinuxParser::Kernel(); }
 // TODONE: Return the system's memory utilization
 float System::MemoryUtilization() { 
      return LinuxParser::MemoryUtilization();
-    
-    }
+}
 
 // TODONE: Return the operating system name
 std::string System::OperatingSystem() { return LinuxParser::OperatingSystem(); }

@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "process.h"
 #include "linux_parser.h"
@@ -36,9 +37,16 @@ string Process::User() { return user_; }
 // TODO: Return the age of this process (in seconds)
 long int Process::UpTime() { return uptime_; }
 
-// TODO: Overload the "less than" comparison operator for Process objects
+// TODONE: Overload the "less than" comparison operator for Process objects
 // REMOVE: [[maybe_unused]] once you define the function
-bool Process::operator<(Process const& a[[maybe_unused]]) const 
+bool Process::operator<(Process const& a) const 
 { 
-    return true; 
+    //std::cout<<"HERERE"<<std::endl;
+    return stol(this->ram_)<stol(a.ram_); 
+}
+
+// TODONE
+bool Process::operator>(Process const& a) const 
+{ 
+    return stol(this->ram_)>stol(a.ram_); 
 }
