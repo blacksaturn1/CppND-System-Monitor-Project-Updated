@@ -17,6 +17,8 @@ string Format::ElapsedTime(long seconds) {
         double fractMinutes = modf(fractHours*60.0,&minutes);
         rem_seconds= fractMinutes*60.0;
         std::stringstream ss;
-        ss << std::setw(2) << std::setfill('0') << hours<<":"<<minutes<<":"<<rem_seconds;
+        ss << std::setw(2) << std::setfill('0') << hours<<":";
+        ss << std::setw(2) << std::setfill('0') << minutes<<":";
+        ss << std::setw(2) << std::setfill('0') << rem_seconds;
         return ss.str(); 
     }

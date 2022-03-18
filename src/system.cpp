@@ -5,6 +5,9 @@
 #include <vector>
 
 #include <iostream>
+#include <algorithm>
+
+#include <charconv>
 
 #include "process.h"
 #include "processor.h"
@@ -15,6 +18,10 @@ using std::size_t;
 using std::string;
 using std::vector;
 
+System::System():hertz_(LinuxParser::Jiffies()){}
+
+long System::Hertz() const{ return hertz_; }
+  
 // TODO: Return the system's CPU
 Processor& System::Cpu() { return cpu_; }
 
@@ -22,26 +29,18 @@ Processor& System::Cpu() { return cpu_; }
 vector<Process>& System::Processes() { 
     vector<int> x=LinuxParser::Pids();
     processes_.clear();
-    //vector<Process>* proc=&processes_; 
-    //oc=new vector<Process>();
-    //std::cout<<x.size()<<std::endl;
     for(auto &&i:x){
-        //std::cout<<"here"<<std::endl;
-        //std::cout<<x.size()<<std::endl;
-        std::string user=LinuxParser::User(i);
-        std::string command=LinuxParser::Command(i);
-        std::string ram=LinuxParser::Ram(i);
-        long int uptime=LinuxParser::UpTime(i);
-        float cpu=.3;
-        
-        Process p(i,user,command,cpu,ram,uptime);
-    
+       
+        Process p;
+        p.SetProcess(i,Hertz());
         processes_.push_back(p);
 
     }
+    
     std::sort(processes_.begin(), processes_.end(),std::greater<Process>());
     return processes_; 
 }
+
 
 // TODONE: Return the system's kernel identifier (string)
 std::string System::Kernel() { return LinuxParser::Kernel(); }
@@ -61,4 +60,7 @@ int System::RunningProcesses() { return LinuxParser::RunningProcesses(); }
 int System::TotalProcesses() { return LinuxParser::TotalProcesses(); }
 
 // TODONE: Return the number of seconds since the system started running
-long int System::UpTime() { return LinuxParser::UpTime(); }
+long int System::UpTime() { 
+    systemUptime_=LinuxParser::UpTime(); 
+    return systemUptime_;
+}
